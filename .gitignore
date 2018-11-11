@@ -1,0 +1,5 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+boilerplate/node_modules/
+boilerplate/package-lock.json
+ts-react-rxjs-boilerplate.iml

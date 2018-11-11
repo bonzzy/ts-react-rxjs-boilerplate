@@ -1,0 +1,53 @@
+{
+  "name": "ts-react-rxjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "a": "tsc",
+    "clean": "rimraf ./dist",
+    "build": "webpack --progress --color",
+    "build:dev": "npm run clean && cross-env NODE_ENV=development webpack --progress --color",
+    "build:prod": "npm run clean && cross-env NODE_ENV=production webpack --progress --color",
+    "start": "webpack-dev-server --progress --color"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bonzzy/ts-react-rxjs-boilerplate.git"
+  },
+  "keywords": [
+    "rxjs",
+    "react",
+    "typescript"
+  ],
+  "author": "Tomislav Fabeta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bonzzy/ts-react-rxjs-boilerplate/issues"
+  },
+  "homepage": "https://github.com/bonzzy/ts-react-rxjs-boilerplate#readme",
+  "dependencies": {
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
+    "react-router-dom": "^4.3.1",
+    "rxjs": "^6.3.3",
+    "typescript": "^3.1.6",
+    "webpack": "^4.25.1"
+  },
+  "devDependencies": {
+    "@degordian/standards": "^1.0.8",
+    "@types/react": "^16.7.2",
+    "@types/react-dom": "^16.0.9",
+    "@types/react-router-dom": "^4.3.1",
+    "awesome-typescript-loader": "^5.2.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^3.2.0",
+    "rimraf": "^2.6.2",
+    "ts-loader": "^5.3.0",
+    "tslint": "^5.11.0",
+    "tslint-sonarts": "^1.8.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}
