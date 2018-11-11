@@ -12,3 +12,9 @@ declare module '*.svg' {
     const names: string;
     export default names;
 }
+
+declare module 'JSX' {
+    interface IntrinsicElements {
+        [elemName: string]: any;
+    }
+}

@@ -11,11 +11,5 @@ export class HotReloader {
         //     console.log("Hot reloading PageComponent", updateComponents, componentPath);
         //     componentContext.setState({});
         // });
-
-        module.hot.accept(componentPath, (event, a) => {
-            console.log("Hot reloading PageComponent", event, a)
-            const indexComponent = require('./components/PageComponent').PageComponent;
-            render(render(indexComponent), appRootElement);
-        });
     }
 }
