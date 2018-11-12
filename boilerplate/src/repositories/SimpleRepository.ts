@@ -1,8 +1,8 @@
-import {Repository} from './Repository';
 import {SimpleModel} from '../models/SimpleModel';
-import {observable, Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
+import {ObservableRepository} from './ObservableRepository';
 
-export class SimpleRepository implements Repository<SimpleModel> {
+export class SimpleRepository implements ObservableRepository<SimpleModel> {
     private observable: Subject<SimpleModel[]> = new Subject();
     private data: SimpleModel[] = [];
     private static instance = new SimpleRepository();
@@ -11,8 +11,7 @@ export class SimpleRepository implements Repository<SimpleModel> {
         return this.instance;
     }
 
-    private constructor() {
-    }
+    private constructor() {}
 
     async remove(simpleModel: SimpleModel): Promise<SimpleModel> {
         this.data = this.data.filter((data: SimpleModel) => {
