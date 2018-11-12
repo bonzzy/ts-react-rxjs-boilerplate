@@ -2,6 +2,8 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
 class WebpackConfigurator {
@@ -21,13 +23,16 @@ class WebpackConfigurator {
                 'ttf',
                 'gif'
             ],
+            jsOptimization: true,
         };
 
+        this.addParam(this.webpackConfig, 'optimization', {});
         this.addParam(this.webpackConfig, 'module', {});
         this.addParam(this.webpackConfig, 'resolve', {});
         this.addParam(this.webpackConfig, 'plugins', []);
         this.addParam(this.webpackConfig.module, 'rules', []);
         this.addParam(this.webpackConfig.resolve, 'extensions', []);
+        this.addParam(this.webpackConfig.optimization, 'minimizer', []);
     }
 
     isProd() {
@@ -69,6 +74,16 @@ class WebpackConfigurator {
         return this;
     }
 
+    attachCss() {
+        this.configAttachments.css = true;
+        return this;
+    }
+
+    attachJsOptimization() {
+        this.configAttachments.jsOptimization = true;
+        return this;
+    }
+
     _attachTypescript() {
         this.webpackConfig.module.rules.push({
             test: /\.tsx?$/,
@@ -87,14 +102,47 @@ class WebpackConfigurator {
         });
     }
 
+    _attachCss() {
+        this.webpackConfig.module.rules.push({
+            test: /\.css/,
+            use: [{
+                loader: 'css-loader',
+                options: {
+                    sourceMap: true,
+                    // Enable CSS Modules to scope class names
+                    // modules: true,
+                    minimize: this.isProd(),
+                    importLoaders: 1,
+                }
+            }, {
+                // Adjust URLs in CSS files so that they are relative to the source file rather than the output file
+                loader: 'resolve-url-loader'
+            }],
+            // Do not extract in development mode for hot reloading
+            fallback: 'style-loader'
+        });
+    }
+
     _attachSass() {
         this.webpackConfig.module.rules.push({
             test: /\.scss$/,
             use: [
-                'style-loader',
-                'css-loader',
-                'sass-loader'
-            ]
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: "css-loader",
+                    options: {
+                        url: false,
+                        sourceMap: true,
+                        modules: false,
+                    }
+                },
+                {
+                    loader: "sass-loader",
+                    options: {
+                        sourceMap: true
+                    }
+                }
+            ],
         });
     }
 
@@ -110,6 +158,16 @@ class WebpackConfigurator {
         };
 
         this.webpackConfig.module.rules.push(fileExtensionsObj);
+    }
+
+    _attachJsOptimization() {
+        this.webpackConfig.optimization.minimizer.push(
+            new UglifyJsPlugin({
+                sourceMap: true,
+                parallel: true,
+                extractComments: true,
+            })
+        );
     }
 
     _runMethod(configMethodName) {
@@ -163,9 +221,8 @@ const webpackConfigurator = new WebpackConfigurator(
             publicPath: '/',
         },
         plugins: [
-            new ExtractTextPlugin({
-                filename: 'main.css',
-                disable: true
+            new MiniCssExtractPlugin({
+                filename: "[name].[hash].css",
             }),
             new CleanWebpackPlugin([mainConfig.output.path]),
             new HtmlWebpackPlugin({
@@ -187,6 +244,7 @@ const webpackConfigurator = new WebpackConfigurator(
 webpackConfigurator
     .attachTypescript()
     // .attachJavascript()
+    // .attachCss()
     .attachSass()
     .build();
 

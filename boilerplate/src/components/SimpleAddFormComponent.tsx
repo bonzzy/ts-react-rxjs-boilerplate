@@ -36,9 +36,10 @@ export class SimpleAddFormComponent extends React.Component<Props, State> {
 
     render() {
         return (
-            <div>
-                <input name={InputName.title} type='text' placeholder={'Write title...'} onChange={this.handleInputChange}/>
-                <input name={InputName.description} type='text'
+            <div className='FormComponent'>
+                <input className='FormComponent--simple-input' name={InputName.title}
+                       type='text' placeholder={'Write title...'} onChange={this.handleInputChange}/>
+                <input className='FormComponent--simple-input' name={InputName.description} type='text'
                        placeholder={'Write description...'} onChange={this.handleInputChange}/>
                 <button onClick={this.addNew}>Add new</button>
                 <button onClick={this.removeAllModels}>Remove all</button>
